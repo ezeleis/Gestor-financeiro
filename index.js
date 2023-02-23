@@ -81,16 +81,14 @@ function addEarning() {
   document.getElementById('earnings-list').appendChild(li);
 }
 
-for (var i = 0; i < earningsList.length; i++) {
-  var li = document.createElement('li');
-  li.innerText = `${earningsList[i].description}: R$ ${earningsList[i].value}`;
+function generateLists(array, listElementId) {
+  for (let i = 0; i < array.length; i++) {
+    let li = document.createElement('li');
+    li.innerText = `${array[i].description}: R$ ${array[i].value}`;
 
-  document.getElementById('earnings-list').appendChild(li);
+    document.getElementById(listElementId).appendChild(li);
+  }
 }
 
-for (var i = 0; i < expensesList.length; i++) {
-  var li = document.createElement('li');
-  li.innerText = `${expensesList[i].description}: R$ ${expensesList[i].value}`;
-
-  document.getElementById('expenses-list').appendChild(li);
-}
+generateLists(expensesList, 'expenses-list');
+generateLists(earningsList, 'earnings-list');
