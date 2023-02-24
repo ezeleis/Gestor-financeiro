@@ -1,94 +1,149 @@
-const valueInput = document.getElementById('value-input');
+const monthNames = [
+  'janeiro',
+  'fevereiro',
+  'março',
+  'abril',
+  'maio',
+  'junho',
+  'julho',
+  'agosto',
+  'setembro',
+  'outubro',
+  'novembro',
+  'dezembro',
+];
 const descriptionInput = document.getElementById('description-input');
+const valueInput = document.getElementById('value-input');
 
-var mesAtual = 'janeiro';
-var entradas = 8000;
-var saidas = 400;
-var saldo = 1000;
-
-var earningsList = [
-  {
-    description: 'Salário',
-    value: 4000,
-  },
-  {
-    description: 'Freela',
-    value: 400,
-  },
-];
-
-var expensesList = [
-  {
-    description: 'Alimentação',
-    value: 650,
-  },
-  {
-    description: 'PSN',
-    value: 40,
-  },
-  {
-    description: 'Energia',
-    value: 500,
-  },
-];
+var mesAtual = monthNames[new Date().getMonth()];
 
 // Mês
 document.getElementById('month').innerHTML = mesAtual;
 
-// Entradas
-document.getElementById('total-earnings').innerHTML = entradas;
+class FinancialTransaction {
+  description;
+  value;
 
-// Saídas
-document.getElementById('total-expenses').innerHTML = saidas;
-
-// Saldo
-document.getElementById('final-balance').innerHTML = saldo;
-
-function addFinancialMovement() {
-  const earningRadioValueIsChecked =
-    document.getElementById('earning-radio').checked;
-
-  if (earningRadioValueIsChecked) {
-    addEarning();
-  } else {
-    addExpense();
+  constructor(description, value) {
+    this.description = description;
+    this.value = Number(value);
   }
 }
 
-function addExpense() {
-  const newExpense = {
-    description: descriptionInput.value,
-    value: valueInput.value,
-  };
-  expensesList.push(newExpense);
+class FinancialTransactionsManager {
+  expensesList;
+  earningsList;
+  #totalEarnings = 0;
+  #totalExpenses = 0;
+  #finalBalance = 0;
 
-  var li = document.createElement('li');
-  li.innerText = `${newExpense.description}: R$ ${newExpense.value}`;
+  constructor(initialExpenses = [], initialEarnings = []) {
+    this.expensesList = initialExpenses;
+    this.earningsList = initialEarnings;
 
-  document.getElementById('expenses-list').appendChild(li);
-}
+    this.createScreen();
+  }
 
-function addEarning() {
-  const newExpense = {
-    description: descriptionInput.value,
-    value: valueInput.value,
-  };
-  expensesList.push(newExpense);
+  createScreen() {
+    if (this.expensesList > 0) {
+      this.createHtmlListFromArray(this.expensesList, 'expenses-list');
+    }
+    if (this.earningsList > 0) {
+      this.createHtmlListFromArray(this.earningsList, 'earnings-list');
+    }
 
-  var li = document.createElement('li');
-  li.innerText = `${newExpense.description}: R$ ${newExpense.value}`;
+    this.updateIndicators();
+  }
 
-  document.getElementById('earnings-list').appendChild(li);
-}
+  addEarning(description, value) {
+    const addedFinancialTransaction = new FinancialTransaction(
+      description,
+      value
+    );
+    this.earningsList.push(addedFinancialTransaction);
+    this.updateScreen(addedFinancialTransaction, 'earnings-list');
+    this.clearInputs();
 
-function generateLists(array, listElementId) {
-  for (let i = 0; i < array.length; i++) {
-    let li = document.createElement('li');
-    li.innerText = `${array[i].description}: R$ ${array[i].value}`;
+    window.alert('A entrada foi adicionada!');
+  }
+
+  addExpense(description, value) {
+    const addedFinancialTransaction = new FinancialTransaction(
+      description,
+      value
+    );
+    this.expensesList.push(addedFinancialTransaction);
+    this.updateScreen(addedFinancialTransaction, 'expenses-list');
+    this.clearInputs();
+
+    window.alert('A despesa foi adicionada!');
+  }
+
+  updateScreen(newItem, htmlListId) {
+    this.createListItem(newItem, htmlListId);
+    this.updateIndicators();
+  }
+
+  updateIndicators() {
+    this.#totalEarnings = this.earningsList.reduce(
+      (accumulator, currentValue) =>
+        (accumulator += Number(currentValue.value)),
+      0
+    );
+
+    this.#totalExpenses = this.expensesList.reduce(
+      (accumulator, currentValue) =>
+        (accumulator += Number(currentValue.value)),
+      0
+    );
+
+    this.#finalBalance = this.#totalEarnings - this.#totalExpenses;
+
+    document.getElementById('final-balance').innerHTML = this.#finalBalance;
+    document.getElementById('total-expenses').innerHTML = this.#totalExpenses;
+    document.getElementById('total-earnings').innerHTML = this.#totalEarnings;
+  }
+
+  createHtmlListFromArray(objectsArray, listElementId) {
+    for (var i = 0; i < objectsArray.length; i++) {
+      this.createListItem(objectsArray[i], listElementId);
+    }
+  }
+
+  createListItem(object, listElementId) {
+    var li = document.createElement('li');
+    li.innerText = `${object.description}: R$ ${object.value}`;
 
     document.getElementById(listElementId).appendChild(li);
   }
+
+  clearInputs() {
+    descriptionInput.value = '';
+    valueInput.value = 0;
+  }
 }
 
-generateLists(expensesList, 'expenses-list');
-generateLists(earningsList, 'earnings-list');
+const financialTransactionsManager = new FinancialTransactionsManager();
+
+function addFinancialTransaction() {
+  const earningRadioValueIsChecked =
+    document.getElementById('earning-radio').checked;
+
+  const isValidForm = descriptionInput.value.length > 0 && valueInput.value > 0;
+
+  if (isValidForm) {
+    if (earningRadioValueIsChecked) {
+      financialTransactionsManager.addEarning(
+        descriptionInput.value,
+        valueInput.value
+      );
+    } else {
+      financialTransactionsManager.addExpense(
+        descriptionInput.value,
+        valueInput.value
+      );
+    }
+  } else {
+    window.alert('O formulário está inválido!');
+  }
+}
