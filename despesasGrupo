@@ -1,0 +1,48 @@
+//Despesas em Grupo
+
+var groupExpensesList = []; 
+
+class GroupFinancialTransaction {
+  description;
+  value;
+  participants;
+  partialValue;
+
+  constructor(description, value, participants) {
+    this.description = description;
+    this.value = Number(value);
+    this.participants = participants;
+    this.partialValue = value/participants;
+  }
+}
+
+
+addGroupExpense(description,value,participants){
+    const addedGroupFinacialTransaction = new GroupFinancialTransaction(
+      description,
+      value,
+      participants
+    );
+
+    groupExpensesList.push(addedGroupFinancialTransaction);
+
+
+  }
+
+  function addGroupFinancialTransaction() {
+
+    const isValidForm = document.getElementById("group-description-input")&&
+                        document.getElementById("group-value-input")&&
+                        document.getElementById("group-participants-input");
+  
+    if (isValidForm) {
+        addGroupExpense(
+            document.getElementById("group-description-input").value,
+            document.getElementById("group-value-input").value,
+            document.getElementById("group-participants-input").value,
+        );
+      }
+     else {
+      window.alert('O formulário está inválido!');
+    };
+  

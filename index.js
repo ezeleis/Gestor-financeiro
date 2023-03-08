@@ -40,7 +40,6 @@ class FinancialTransactionsManager {
   constructor(initialExpenses = [], initialEarnings = []) {
     this.expensesList = initialExpenses;
     this.earningsList = initialEarnings;
-
     this.createScreen();
   }
 
@@ -51,7 +50,6 @@ class FinancialTransactionsManager {
     if (this.earningsList > 0) {
       this.createHtmlListFromArray(this.earningsList, 'earnings-list');
     }
-
     this.updateIndicators();
   }
 
