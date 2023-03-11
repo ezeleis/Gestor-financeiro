@@ -26,6 +26,7 @@ function addGroupFinancialTransaction(){
 
     groupExpensesList.push(addedGroupFinacialTransaction);
     listGroupExpense(addedGroupFinacialTransaction);
+    alert(`A despesa ${addedGroupFinacialTransaction.description} foi adicionada com suceso`);
     const btn = document.getElementById('add-new-financial-movement-button');
 
     btn.addEventListener('click', function handleClick(event) {
@@ -60,7 +61,3 @@ function listGroupExpense(expenseObj){
     alert("Favor de inserir todos os dados");
   }
 };
-
-
-
- 
