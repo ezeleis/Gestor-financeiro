@@ -26,9 +26,23 @@ function addGroupFinancialTransaction(){
 
     groupExpensesList.push(addedGroupFinacialTransaction);
     listGroupExpense(addedGroupFinacialTransaction);
+    const btn = document.getElementById('add-new-financial-movement-button');
+
+    btn.addEventListener('click', function handleClick(event) {
+      
+      event.preventDefault();
+
+      const inputs = document.querySelectorAll('#group-description-input, #group-value-input, #group-participants-input');
+
+      inputs.forEach(input => {
+        input.value = '';
+      });
+    });
+
   };
 
 function listGroupExpense(expenseObj){
+  if(expenseObj.description!=null&&expenseObj.value!=0&&expenseObj.participants!=0){
     let description = document.createElement("li");
     description.innerHTML= expenseObj.description;
     document.getElementById("group-title").appendChild(description)
@@ -41,20 +55,12 @@ function listGroupExpense(expenseObj){
     let partialValue = document.createElement("li");
     partialValue.innerHTML= `R$ ${expenseObj.partialValue}`;
     document.getElementById("partial-value").appendChild(partialValue);
+  }
+  else {
+    alert("Favor de inserir todos os dados");
+  }
+};
 
-}
 
 
-
-    //   createHtmlListFromArray(objectsArray, listElementId) {
-    //     for (var i = 0; i < objectsArray.length; i++) {
-    //       this.createListItem(objectsArray[i], listElementId);
-    //     }
-    //   }
-    
-    //   createListItem(object, listElementId) {
-    //     var li = document.createElement('li');
-    //     li.innerText = `${object.description}: R$ ${object.value}`;
-    
-    //     document.getElementById(listElementId).appendChild(li);
-    //   }
+ 

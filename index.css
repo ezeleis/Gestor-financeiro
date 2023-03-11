@@ -109,3 +109,10 @@ body {
   color: rgb(222, 222, 222);
   margin: 1rem;
 }
+
+#Valor-total{
+  background-color: #5d1616;
+}
+#Valor-parcial{
+  background-color: #196033;
+}

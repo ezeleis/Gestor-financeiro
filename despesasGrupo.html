@@ -16,7 +16,11 @@
   </head>
   <body>
     <div class="header">
-      <a type="button" id="back-button" href="index.html">Voltar</a>
+      <nav>
+        <a type="button" id="expenses" href="index.html"><img src="images/expenses.png"></a>
+        <a type="button" id="group" href="despesasGrupo.html"><img src="images/group.png"></a>
+      </nav>
+      
       <h1>Despesas em Grupo</h1>
       <button id="open-modal-button">Adicionar despesa em grupo</button>
 
@@ -84,11 +88,11 @@
         <h4>Numero de participantes</h4>
         <p><span id="number-of-participants"></span></p>
       </div>
-      <div class="indicator">
+      <div class="indicator" id="Valor-parcial">
         <h4>Valor parcial</h4>
         <p><span id="partial-value"></span></p>
       </div>
-      <div class="indicator">
+      <div class="indicator" id="Valor-total">
         <h4>Valor total</h4>
         <p><span id="total-amount"></span></p>
       </div>
